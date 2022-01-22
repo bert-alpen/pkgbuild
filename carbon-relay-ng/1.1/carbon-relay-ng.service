@@ -1,0 +1,13 @@
+[Unit]
+Description=carbon-relay-ng
+
+[Service]
+Type=simple
+User=carbon-relay-ng
+Group=carbon-relay-ng
+ExecStart=/usr/bin/carbon-relay-ng
+KillSignal=SIGINT
+SendSIGHUP=yes
+
+[Install]
+WantedBy=multi-user.target
