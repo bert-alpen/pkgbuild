@@ -1,0 +1,51 @@
+pkgname=mqtt2prometheus
+pkgver=0.1.6.8
+semanticver=0.1.6-RC8
+commit=8844da57c7da18b2dfdfccaf17a36005cc7e6e2d
+commitdate=2021-05-30T18:52:48Z
+pkgrel=1
+pkgdesc='An exporter to translate from MQTT topics to prometheus metrics'
+arch=('i686' 'x86_64' 'armv7h')
+url='https://github.com/hikhvar/mqtt2prometheus'
+license=('MIT')
+makedepends=('go')
+source=(
+  "$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$semanticver.tar.gz"
+  "$pkgname.service"
+  "$pkgname.sysusers"
+  'config.yaml'
+)
+sha256sums=(
+  '0134deaf2f64705710ae74af00acc916428f53aa3c7cdda258218c5f68cafbd7'
+  '0aab4887504c32aef843a26ebb34471a82517e87d6a3816a38cd7b5827bdddd4'
+  '0c68f8837253c1b9ae6817c4aaabc5827a596da4f35822395f0c681762ffd24b'
+  '339b941d17d4f9daf00f0938be58d07d0313b328258075d191cd7795ea4807cf'
+)
+
+prepare(){
+pwd
+  mkdir -p $pkgname-$semanticver/build/
+}
+
+build() {
+  cd $pkgname-$semanticver
+  export CGO_CPPFLAGS="${CPPFLAGS}"
+  export CGO_CFLAGS="${CFLAGS}"
+  export CGO_CXXFLAGS="${CXXFLAGS}"
+  export CGO_LDFLAGS="${LDFLAGS}"
+  export GOFLAGS="-buildmode=pie -trimpath -ldflags=-linkmode=external -mod=readonly -modcacherw"
+  go build -ldflags="-s -w -X main.version=$semanticver -X main.commit="$commit" -X main.date=$commitdate" -o build/$pkgname-$pkgver ./cmd
+}
+
+check() {
+  cd $pkgname-$semanticver
+  go test ./...
+  go vet ./...
+}
+
+package() {
+  install -Dm755 $pkgname-$semanticver/build/$pkgname-$pkgver "${pkgdir}"/usr/bin/$pkgname
+  install -Dm644 $pkgname.service                             "${pkgdir}"/usr/lib/systemd/system/$pkgname.service
+  install -Dm644 $pkgname.sysusers                            "${pkgdir}"/usr/lib/sysusers.d/$pkgname.conf
+  install -Dm644 config.yaml                                  "${pkgdir}"/etc/$pkgname/config.yaml
+}

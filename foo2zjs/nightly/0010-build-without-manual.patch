@@ -1,0 +1,11 @@
+--- foo2zjs/Makefile	2020-08-20 11:02:22.328802900 +0200
++++ foo2zjs/Makefile2	2020-08-20 11:23:54.700422018 +0200
+@@ -1577,7 +1577,7 @@
+ 	# Install documentation
+ 	#
+ 	$(INSTALL) -d -m 755 $(DOCDIR)
+-	$(INSTALL) -c -m 644 manual.pdf $(DOCDIR)
++	#$(INSTALL) -c -m 644 manual.pdf $(DOCDIR)
+ 	$(INSTALL) -c -m 644 COPYING $(DOCDIR)
+ 	$(INSTALL) -c -m 644 INSTALL $(DOCDIR)
+ 	$(INSTALL) -c -m 644 INSTALL.osx $(DOCDIR)

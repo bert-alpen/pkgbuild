@@ -1,0 +1,13 @@
+diff --unified --recursive --text networkd-dispatcher-2.0.1/networkd-dispatcher patched/networkd-dispatcher
+--- networkd-dispatcher-2.0.1/networkd-dispatcher	2019-01-30 19:08:02.000000000 +0100
++++ patched/networkd-dispatcher	2020-08-18 03:16:28.885132462 +0200
+@@ -30,7 +30,7 @@
+ import dbus.mainloop.glib
+ 
+ logger = logging.getLogger('networkd-dispatcher')
+-
++logger.setLevel(logging.DEBUG)
+ 
+ # Detect up-front which commands we use exist
+ def resolve_path(cmdname):
+

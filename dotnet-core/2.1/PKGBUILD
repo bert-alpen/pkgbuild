@@ -1,0 +1,38 @@
+pkgbase=dotnet-core-rc
+pkgname=('dotnet-host-rc' 'dotnet-runtime-rc')
+pkgver=2.2.4
+pkgrel=1
+arch=('x86_64' 'armv7h')
+url='https://www.microsoft.com/net/core'
+license=('MIT')
+depends=('gcc-libs' 'glibc')
+options=('staticlibs')
+source_x86_64=('https://download.visualstudio.microsoft.com/download/pr/853048a3-764a-4b4d-a608-c6144a84f257/99c5cb1ea145f9dc3c2bbd093c682c9b/dotnet-runtime-2.2.4-linux-x64.tar.gz')
+source_armv7h=('https://download.visualstudio.microsoft.com/download/pr/8c52648c-bedd-44b0-9442-95cd830fdada/d6ba4c50a6b2afddc4ae3d313349f3ac/dotnet-runtime-2.2.4-linux-arm.tar.gz')
+#sha256sums_x86_64=('14b9dfad2899054b55a533adb213a88c19977c34d1b40d7d5095d05ba72eb3e3c229f2a6ec5bb5605133bcaef0b4a68416a90a9c6d572dce1e2c423abda2272b')
+#sha256sums_armv7h=('b9d846ea5881c818850413f42a3b28caad176e9e337ec2097986988a4fc45edfc98d0db266316812d046a92b40888b14c39d872ca165e01de3a06c5899cadc7b')
+sha256sums_x86_64=('0e494df7a3936ac59c17de3b91d928bb3ab3cdd1e6734d581ad4774f551ca239')
+sha256sums_armv7h=('06cc0010e92591c350fe010feacdd6bb55294f89e97ea30eac5a46c33fd8d1f4')
+
+package_dotnet-host-rc() {
+  pkgdesc='A generic driver for the .NET Core Command Line Interface'
+  provides=('dotnet-host')
+  conflicts=('dotnet-host')
+
+  install -dm 755 "${pkgdir}"/{opt/dotnet,usr/bin,usr/share/licenses/dotnet-host}
+  cp -dr --no-preserve='ownership' dotnet host "${pkgdir}"/opt/dotnet/
+  install -m 644 *.txt -t "${pkgdir}"/usr/share/licenses/dotnet-host/
+  ln -s /opt/dotnet/dotnet "${pkgdir}"/usr/bin/
+}
+
+package_dotnet-runtime-rc() {
+  pkgdesc='The .NET Core runtime'
+  depends+=('dotnet-host-rc' 'icu' 'krb5' 'libunwind'  'lldb' 'lttng-ust' 'openssl-1.0' 'zlib'
+            'libcurl.so' 'libuuid.so')
+  provides=('dotnet-runtime-2.0' 'dotnet-runtime')
+  conflicts=('dotnet-runtime-2.0' 'dotnet-runtime')
+
+  install -dm 755 "${pkgdir}"/{opt/dotnet,usr/share/licenses}
+  cp -dr --no-preserve='ownership' shared "${pkgdir}"/opt/dotnet/
+  ln -s dotnet-host "${pkgdir}"/usr/share/licenses/dotnet-runtime
+}

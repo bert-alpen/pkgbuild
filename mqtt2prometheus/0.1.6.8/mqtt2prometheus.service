@@ -1,0 +1,13 @@
+[Unit]
+Description=mqtt2prometheus
+After=network.target mosquitto prometheus
+
+[Service]
+Type=simple
+User=mqtt2prometheus
+Group=mqtt2prometheus
+ExecStart=/usr/bin/mqtt2prometheus -config /etc/mqtt2prometheus/config.yaml
+Restart=on-abort
+TimeoutSec=20
+KillSignal=SIGINT
+SendSIGHUP=yes
