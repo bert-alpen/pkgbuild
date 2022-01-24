@@ -1,0 +1,13 @@
+--- statsmt/latencyhistogram15s32.go	2021-07-07 20:14:22.000000000 +0200
++++ statsmt/latencyhistogram15s32.go.patched	2022-01-24 18:53:05.878814240 +0100
+@@ -9,9 +9,9 @@
+ 
+ // tracks latency measurements in a given range as 32 bit counters
+ type LatencyHistogram15s32 struct {
++	sum   uint64 // in micros. to generate more accurate mean
+ 	hist  hist15s.Hist15s
+ 	since time.Time
+-	sum   uint64 // in micros. to generate more accurate mean
+ }
+ 
+ func NewLatencyHistogram15s32(name string) *LatencyHistogram15s32 {
