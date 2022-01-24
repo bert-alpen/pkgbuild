@@ -5,7 +5,7 @@ Description=carbon-relay-ng
 Type=simple
 User=carbon-relay-ng
 Group=carbon-relay-ng
-ExecStart=/usr/bin/carbon-relay-ng
+ExecStart=/usr/bin/carbon-relay-ng /etc/carbon-rely-ng/carbon-relay-ng.conf
 KillSignal=SIGINT
 SendSIGHUP=yes
 

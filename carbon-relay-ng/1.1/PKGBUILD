@@ -15,10 +15,22 @@ _url="https://github.com/grafana/${pkgname}"
 source=(
   "${pkgname}-${pkgver}.tar.gz::${_url}/archive/refs/tags/${pkgver}.tar.gz"
   "metrictank_util_flag_parser.patch"  
+  "${pkgname}.service" 
+  "${pkgname}.sysusers" 
+  "${pkgname}.tmpfiles"
+  "${pkgname}.conf" 
+  "storage-schemas.conf" 
+  "storage-aggregation.conf" 
 )
 sha256sums=(
   '83b83929d9ce1740e636efb67ea92b8fe8b20f2eae5b7137210d0ee1bbc9b62f'
   'dca720f6f439a94450f8e0f5780646c83000a6893a27aea79afce5f1250e7621'
+  '0242e11f2806c9db56495b45177effcfde79da17646dc426aff1beb83620163e'
+  'e62d15bcbc490fcfadd685aba9d9cfbdf151a5ada55e99c32a556503123a1e44'
+  '595f4874c1e77297e7f6b5853f085401b42dc1d425a049d8e15ee435838fc596'
+  '7a17f42471c4ad13f671d1afbfbac2ffae6fb1d3665cd4f23466d77770960310'
+  '967968e9ab3e0b8741899565ad805c95e1e65f1fbb93cfeaa58600bb4d779c87'
+  '8ededd8bf32eb9af58592450ca22adf9103b6602895b7da4f05c3004bd288b90'
 )
 
 prepare() {
@@ -66,9 +78,18 @@ build() {
 
 package() {
   # Bin
-  # rm -f "${pkgdir}/usr/bin/${pkgname}"
   install -Dm755 "${srcdir}/dist/${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+
+  # Configuration example
+  install -D -m 644 "${srcdir}/${pkgname}.conf" "${pkgdir}/etc/${pkgname}/${pkgname}.conf"
+  install -D -m 644 "${srcdir}/storage-schemas.conf" "${pkgdir}/etc/${pkgname}/storage-schemas.conf"
+  install -D -m 644 "${srcdir}/storage-aggregation.conf" "${pkgdir}/etc/${pkgname}/storage-aggregation.conf"
 
   # License
   install -Dm644 "${srcdir}/${pkgname}-${pkgver#v}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  
+  #systemd files
+  install -D -m 644 "${srcdir}/${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+  install -D -m 644 "${srcdir}/${pkgname}.sysusers" "${pkgdir}/usr/lib/sysusers.d/${pkgname}.conf"
+  install -D -m 644 "${srcdir}/${pkgname}.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/${pkgname}.conf"
 }
