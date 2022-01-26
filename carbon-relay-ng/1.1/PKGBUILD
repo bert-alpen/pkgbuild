@@ -23,6 +23,7 @@ source=(
   "storage-schemas.conf" 
   "storage-aggregation.conf" 
 )
+
 sha256sums=(
   '83b83929d9ce1740e636efb67ea92b8fe8b20f2eae5b7137210d0ee1bbc9b62f'
   'dca720f6f439a94450f8e0f5780646c83000a6893a27aea79afce5f1250e7621'
