@@ -1,2 +1,5 @@
 d /usr/lib/carbon-relay-ng 0755 carbon-relay-ng carbon-relay-ng
-Z /usr/lib/carbon-relay-ng - carbon-relay-ng carbon-relay-ng
+Z /usr/lib/carbon-relay-ng -    carbon-relay-ng carbon-relay-ng
+
+d /var/spool/carbon-relay-ng 0755 carbon-relay-ng carbon-relay-ng
+Z /var/spool/carbon-relay-ng -    carbon-relay-ng carbon-relay-ng
