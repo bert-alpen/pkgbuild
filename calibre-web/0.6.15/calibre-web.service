@@ -5,8 +5,10 @@ Description=Calibre-web
 Type=simple
 User=calibre-web
 Group=calibre-web
+# force the program to use the proper place for storing its user data
+Environment="CALIBRE_DBPATH=/home/calibre-web"
+WorkingDirectory=/home/calibre-web/
 ExecStart=/usr/lib/calibre-web/cps.py
-WorkingDirectory=/usr/lib/calibre-web/
 KillSignal=SIGINT
 SendSIGHUP=yes
 
