@@ -25,7 +25,7 @@ install=$pkgname.install
 backup=('etc/dnsmasq.d/01-pihole.conf' 'etc/pihole/adlists.list' 'etc/dnsmasq.conf' 'etc/sudoers.d/pihole')
 
 source=($pkgname-core-$pkgver.tar.gz::https://github.com/$_pkgname/$_pkgname/archive/v$pkgver.tar.gz
-	    $pkgname-admin-$_wwwpkgver.tar.gz::https://github.com/$_pkgname/$_wwwpkgname/archive/v$_wwwpkgver.tar.gz
+        $pkgname-admin-$_wwwpkgver.tar.gz::https://github.com/$_pkgname/$_wwwpkgname/archive/v$_wwwpkgver.tar.gz
         arch-server-core-$pkgver-$_now.patch::"https://raw.githubusercontent.com/max72bra/pi-hole-server-archlinux-customization/master/arch-server-core-$pkgver.patch"
         arch-server-admin-$_wwwpkgver-$_now.patch::"https://raw.githubusercontent.com/max72bra/pi-hole-server-archlinux-customization/master/arch-server-admin-$_wwwpkgver.patch"
 	    dnsmasq.include
@@ -44,7 +44,7 @@ source=($pkgname-core-$pkgver.tar.gz::https://github.com/$_pkgname/$_pkgname/arc
 sha256sums=('13e7c3d7cdf19c9b9b8a449fea86d55ef68fce9b67ee3ad0429104c0ff509dde'
             '589ef049135a90d622fc68299140e4dc16451ce541b804b35ffa5d25201afeb4'
             '4de3d093636751afdf2f68948c810e8514427b9a0265c317da7d30b07d7726fa'
-            'da64d5e04c527c48819e70bb2d784b1c8861024a4b6ddccace1b723f102ab2c3'
+            'cf8e70f945c961df1d441f57f3d94bed653720a1f63597a8c9c46e51086db50f'
             '96c1fb8b15e1d0e99c18dc768f5dc3d4991184fb2631af84c5e2111028bc5287'
             'f70964f8b176d9ffcf4f44140036f0cfc030cbbe836634a885da082cfee4d1f7'
             '032770450ba4a1085bcb0bf3f944c436c5702f3a3faf984fbbba2d3dbc6accea'
