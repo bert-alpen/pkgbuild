@@ -1,8 +1,8 @@
 # Maintainer: Bert Alpen <bert.alpen@googlemail.com>
 
 pkgname=pidesktop
-pkgver=0.1
-pkgrel=2
+pkgver=0.2
+pkgrel=1
 pkgdesc="Systemd services and script files for the power button functionality of the 'pi desktop' enclosure from element14 (https://community.element14.com/products/devtools/product-pages/w/documents/22485)"
 arch=('armv7h')
 url="https://github.com/bert-alpen/pidesktop"
@@ -18,12 +18,11 @@ source=(
 md5sums=('SKIP')
 
 package() {
-  cd $pkgname-$pkgver
-  install -D -m 755 "pd-powerkey.py" "${pkgdir}/usr/lib/pidesktop"
-  install -D -m 755 "pd-shutdown.py" "${pkgdir}/usr/lib/pidesktop"
-  install -D -m 755 "pd-reboot.py"   "${pkgdir}/usr/lib/pidesktop"
+  install -D -m 755 "${srcdir}/${pkgname}-${pkgver}/pd-powerkey.py" "${pkgdir}/usr/share/pidesktop/pd-powerkey.py"
+  install -D -m 755 "${srcdir}/${pkgname}-${pkgver}/pd-shutdown.py" "${pkgdir}/usr/share/pidesktop/pd-shutdown.py"
+  install -D -m 755 "${srcdir}/${pkgname}-${pkgver}/pd-reboot.py"   "${pkgdir}/usr/share/pidesktop/pd-reboot.py"
 
-  install -D -m 644 "${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
-  install -D -m 644 "${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
-  install -D -m 644 "${pkgname}-shutdown.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-shutdown.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${pkgver}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${pkgver}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${pkgver}/${pkgname}-shutdown.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-shutdown.service"
 }
