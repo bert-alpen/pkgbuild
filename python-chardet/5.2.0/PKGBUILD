@@ -1,0 +1,36 @@
+# Maintainer : J. Peter Mugaas <jpmugaas@suddenlink.net>
+pkgbase=mingw-w64-python-chardet
+pkgname=python-chardet
+provides=python3-chardet
+conflicts=python3-chardet
+replaces=python3-chardet
+pkgdesc='Python module for character encoding auto-detection'
+pkgver=5.2.0
+pkgrel=1
+arch=('any')
+
+url='https://github.com/chardet/chardet'
+license=('spdx:LGPL-2.1-or-later')
+depends=('python')
+makedepends=('python-build'
+             'python-installer'
+             'python-setuptools'
+             'python-wheel')
+options=('!strip')
+source=('https://pypi.org/packages/source/chardet/chardet/chardet-${pkgver}.tar.gz')
+sha256sums=('1b3b6ff479a8c414bc3fa2c0852995695c4a026dcd6d0633b2dd092ca39c1cf7')
+
+prepare() {
+    cd '${srcdir}/${_pkgname}-${pkgver}'
+}
+
+build() {
+    cd '${srcdir}/${_pkgname}-${pkgver}'
+    python -m build --wheel --no-isolation
+}
+
+package() {
+    cd '${srcdir}/${_pkgname}-${pkgver}'
+    python -m installer --destdir='$pkgdir' dist/*.whl
+}
+
