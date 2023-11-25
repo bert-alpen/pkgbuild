@@ -1,0 +1,16 @@
+[Unit]
+Description=Calibre-web
+
+[Service]
+Type=simple
+User=calibre-web
+Group=calibre-web
+# force the program to use the proper place for storing its user data
+Environment="CALIBRE_DBPATH=/home/calibre-web"
+WorkingDirectory=/home/calibre-web/
+ExecStart=/usr/lib/calibre-web/cps.py
+KillSignal=SIGINT
+SendSIGHUP=yes
+
+[Install]
+WantedBy=multi-user.target
