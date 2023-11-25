@@ -15,7 +15,10 @@ provides=('pidesktop')
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/bert-alpen/pidesktop/archive/refs/tags/v${pkgver}.tar.gz"
 )
-md5sums=('SKIP')
+
+sha256sums=(
+  'c238f2f64468066921d802e8b1c06fcc829fb54217f99d2e353caf6523253469'
+)
 
 package() {
   install -D -m 755 "${srcdir}/${pkgname}-${pkgver}/pd-powerkey.py" "${pkgdir}/usr/share/pidesktop/pd-powerkey.py"
