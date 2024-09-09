@@ -1,0 +1,13 @@
+[Unit]
+Description=A boot splash screen for Retroarch
+DefaultDependencies=no
+Requires=local-fs.target
+After=local-fs.target
+
+[Service]
+ExecStart=/usr/bin/fbi -d /dev/fb0 --noverbose -a /opt/retroarch-splashscreen/splash.png
+StandardInput=tty
+StandardOutput=tty
+
+[Install]
+WantedBy=sysinit.target

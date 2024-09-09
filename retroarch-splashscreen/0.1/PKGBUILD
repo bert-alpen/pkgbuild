@@ -1,0 +1,28 @@
+# Maintainer: Bert Alpen <cbert.alpen@googlemail.com>
+pkgname=retroarch-splashscreen
+pkgver=0.1
+pkgrel=4
+pkgdesc="A boot splash screen for Retroarch"
+arch=('any')
+url="https://github.com/"
+license=('GPL3')
+depends=('fbida')
+provides=("${pkgname}")
+conflicts=("${pkgname}")
+
+source=(
+  "${pkgname}.service"
+  "splash.png"
+)
+
+sha256sums=(
+  '6b7ff6197e4618a68d26f024f13b4c1f65de668d651b797edffb680ba5afb048'
+  'b4f82e497388c5d81efe2719962368e2009805f19aeba5c6ff5c058c00ff0d40'
+)
+
+
+package() {
+        mkdir -p "${pkgdir}/etc/${pkgname}/"
+        install -m644 -D "${srcdir}/${pkgname}.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}.service"
+        install -m644 -D "${srcdir}/splash.png"         "${pkgdir}/opt/${pkgname}/splash.png"
+}
