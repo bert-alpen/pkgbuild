@@ -8,7 +8,7 @@
 
 pkgname=python-rpi-gpio
 pkgver=0.7.1
-pkgrel=1
+pkgrel=2
 pkgnamever=$pkgname-$pkgver
 pkgdesc="A Python module to control the GPIO on a Raspberry Pi"
 url="http://sourceforge.net/projects/raspberry-gpio-python"
@@ -16,12 +16,12 @@ license=(MIT)
 arch=(any)
 depends=(python)
 makedepends=(python-distribute)
-srcurl=https://github.com/rern/rern.github.io/releases/download/20210307/$pkgnamever.tar.xz
-source=("$srcurl")
-sha256sums=('ac087d76c331e9f5d66616f178aff8628f79f3fd1e05f44fad4cc935a49b709a')
+
+source=(https://files.pythonhosted.org/packages/c4/0f/10b524a12b3445af1c607c27b2f5ed122ef55756e29942900e5c950735f2/RPi.GPIO-$pkgver.tar.gz)
+sha256sums=('cd61c4b03c37b62bba4a5acfea9862749c33c618e0295e7e90aa4713fb373b70')
 
 package() {
-	mv -f "$srcdir/$pkgnamever" "$srcdir/RPi.GPIO-$pkgver"
-	cd "$srcdir/RPi.GPIO-$pkgver"
-	env CFLAGS="-fcommon" python setup.py install --prefix=/usr --root="$pkgdir" --optimize=1
+	cd $srcdir/RPi.GPIO-$pkgver
+	env CFLAGS="-fcommon" python setup.py install --prefix=/usr --root=$pkgdir --optimize=1
 }
+
