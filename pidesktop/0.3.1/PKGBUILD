@@ -1,0 +1,48 @@
+	# Maintainer: Bert Alpen <bert.alpen@googlemail.com>
+
+pkgname=pidesktop
+pkgver=0.3.1
+sourcever=0.3
+pkgrel=1
+pkgdesc="Systemd services and script files for the power button functionality of the 'pi desktop' enclosure from element14 (https://community.element14.com/products/devtools/product-pages/w/documents/22485)"
+arch=('armv7h')
+url="https://github.com/bert-alpen/pidesktop"
+license=('MIT')
+depends=(
+  'python'
+)
+provides=('pidesktop')
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/bert-alpen/pidesktop/archive/refs/tags/v${sourcever}.tar.gz"
+)
+sha256sums=(
+  'c238f2f64468066921d802e8b1c06fcc829fb54217f99d2e353caf6523253469'
+)
+
+prepare() {
+  python -m venv venv
+  source venv/bin/activate
+  pip install RPi.GPIO
+  pip install pyinstaller
+  sed -i -E "s/ExecStart=\/usr\/bin\/python -u (\/usr\/share\/pidesktop\/pd-[a-z]+).py/ExecStart=\1/" "${srcdir}/${pkgname}-${sourcever}/${pkgname}-powerbutton.service"
+  sed -i -E "s/ExecStart=\/usr\/bin\/python -u (\/usr\/share\/pidesktop\/pd-[a-z]+).py/ExecStart=\1/" "${srcdir}/${pkgname}-${sourcever}/${pkgname}-reboot.service"
+  sed -i -E "s/ExecStart=\/usr\/bin\/python -u (\/usr\/share\/pidesktop\/pd-[a-z]+).py/ExecStart=\1/" "${srcdir}/${pkgname}-${sourcever}/${pkgname}-poweroff.service"
+}
+
+build() {
+  cd "$pkgname-$sourcever"
+  pyinstaller pd-powerkey.py --noconfirm
+  pyinstaller pd-poweroff.py --noconfirm
+  pyinstaller pd-reboot.py   --noconfirm
+}
+
+package() {
+  install -d -m 755 "$pkgdir"/usr/share/pidesktop/{pd-powerkey,pd-poweroff,pd-reboot}
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey/* ${pkgdir}/usr/share/pidesktop/pd-powerkey/
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff/* ${pkgdir}/usr/share/pidesktop/pd-poweroff/
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot/*   ${pkgdir}/usr/share/pidesktop/pd-reboot/
+
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-poweroff.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-poweroff.service"
+}
