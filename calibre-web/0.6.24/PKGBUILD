@@ -1,0 +1,49 @@
+# Maintainer: Bert Alpen <bert.alpen@googlemail.com>
+
+pkgname=calibre-web 
+pkgver=0.6.24 
+pkgrel=1 
+pkgdesc="Web app for browsing, reading and downloading eBooks stored in a Calibre database" 
+arch=('any') 
+provides=(calibre-web)
+conflicts=(calibre-web)
+url="https://github.com/janeczku/calibre-web" 
+license=('GPL3') 
+
+depends=(
+  'python>=3'
+  'python-pip'
+  'libxml2'
+  'libxslt'
+  'rust'
+)
+
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/janeczku/calibre-web/archive/${pkgver}.tar.gz"
+  'calibre-web.service'
+  'calibre-web.sysusers'
+  'calibre-web.tmpfiles'
+)
+
+sha256sums=(
+  '65d06505765e9a48c02451437e39afab3e7deb7bb13a705359ea271e32990cc8'
+  '619d9b6adb8985c285f7a43ad857f8b74684b1d7f88cd9d55ea5d1a680e730e3'
+  'f826710d1ff13eeb2b5c9192766eeb1db92887d438a505e73e6b1d58f29db2fe'
+  'b0e205c05e59ce473e03b27804e940cfab5bbb6fbae4fd870141b47f1c4fcdd2'
+)
+
+install=$pkgname.install
+
+#build() {
+#}
+
+package() {
+  cd $pkgname-$pkgver
+  install -d -m 755 "${pkgdir}/usr/lib/calibre-web"
+  cp -a "${srcdir}/$pkgname-$pkgver"/* "${pkgdir}/usr/lib/calibre-web/"
+  rm -rf "${pkgdir}/usr/lib/calibre-web/.git"
+
+  install -D -m 644 "${srcdir}/calibre-web.service" "${pkgdir}/usr/lib/systemd/system/calibre-web.service"
+  install -D -m 644 "${srcdir}/calibre-web.sysusers" "${pkgdir}/usr/lib/sysusers.d/calibre-web.conf"
+  install -D -m 644 "${srcdir}/calibre-web.tmpfiles" "${pkgdir}/usr/lib/tmpfiles.d/calibre-web.conf"
+}

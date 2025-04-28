@@ -1,0 +1,36 @@
+# arg 1:  the new package version
+post_install() {
+  create_venv
+}
+
+# arg 1:  the new package version
+# arg 2:  the old package version
+pre_upgrade() {
+  remove_venv
+}
+
+# arg 1:  the new package version
+# arg 2:  the old package version
+post_upgrade() {
+  create_venv
+}
+
+# arg 1:  the old package version
+post_remove() {
+  remove_venv
+}
+
+create_venv() {
+  echo "Preparing virtual environment for calibre-web"
+  cd /usr/lib/calibre-web
+  python -m venv venv
+  source venv/bin/activate
+  echo "Installing dependencies"
+  ./venv/bin/python3 -m pip install -r requirements.txt
+}
+
+remove_venv() {
+  echo "Cleanup: Removing virtual environment"
+  rm -r /usr/lib/calibre-web/venv
+}
+  
