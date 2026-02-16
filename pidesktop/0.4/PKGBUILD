@@ -14,9 +14,15 @@ depends=(
 provides=('pidesktop')
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/bert-alpen/pidesktop/archive/refs/tags/v${sourcever}.tar.gz"
+  "${pkgname}-powerbutton.service"
+  "${pkgname}-poweroff.service"
+  "${pkgname}-reboot.service"  
 )
 sha256sums=(
-  'c238f2f64468066921d802e8b1c06fcc829fb54217f99d2e353caf6523253469'
+  'f2c04750eedbde93e61b06aa4a34cae905d62a51fa9ab0393c22658cf5d142e4'
+  '2b81613b75e89103d9f1f00af6d6d1c047b4e959ea32875bd58d00f4fec1e0d0'
+  '29dd23bd6d55004d4d1db37b99b6d1f8f920cb270360d83cfb823e73f08ae9a8'
+  'fdb716bde7539fac507129ca3568a4b320934d0bc85077e6404036b0fe705b5b'
 )
 
 prepare() {
@@ -34,12 +40,12 @@ build() {
 }
 
 package() {
-  install -d -m 755 "$pkgdir"/usr/share/pidesktop/{pd-powerkey,pd-poweroff,pd-reboot}
-  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey/pd-powerkey ${pkgdir}/usr/bin/pidesktop/pd-powerkey
-  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff/pd-poweroff ${pkgdir}/usr/bin/pidesktop/pd-poweroff
-  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot/pd-reboot     ${pkgdir}/usr/bin/pidesktop/pd-reboot
+  mkdir -p "${pkgdir}/usr/bin/pidesktop/"
+  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey/pd-powerkey" "${pkgdir}/usr/bin/pidesktop/"
+  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff/pd-poweroff" "${pkgdir}/usr/bin/pidesktop/"
+  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot/pd-reboot"     "${pkgdir}/usr/bin/pidesktop/"
 
-  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
-  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
-  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-poweroff.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-poweroff.service"
+  install -D -m 644 "${srcdir}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
+  install -D -m 644 "${srcdir}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
+  install -D -m 644 "${srcdir}/${pkgname}-poweroff.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-poweroff.service"
 }
