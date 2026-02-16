@@ -1,0 +1,45 @@
+# Maintainer: Bert Alpen <bert.alpen@googlemail.com>
+
+pkgname=pidesktop
+pkgver=0.4.0
+sourcever=0.4
+pkgrel=1
+pkgdesc="Systemd services and script files for the power button functionality of the 'pi desktop' enclosure from element14 (https://community.element14.com/products/devtools/product-pages/w/documents/22485)"
+arch=('armv7h')
+url="https://github.com/bert-alpen/pidesktop"
+license=('MIT')
+depends=(
+  'python'
+)
+provides=('pidesktop')
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/bert-alpen/pidesktop/archive/refs/tags/v${sourcever}.tar.gz"
+)
+sha256sums=(
+  'c238f2f64468066921d802e8b1c06fcc829fb54217f99d2e353caf6523253469'
+)
+
+prepare() {
+  python -m venv venv
+  source venv/bin/activate
+  pip install RPi.GPIO
+  pip install pyinstaller
+}
+
+build() {
+  cd "$pkgname-$sourcever"
+  pyinstaller pd-powerkey.py --noconfirm
+  pyinstaller pd-poweroff.py --noconfirm
+  pyinstaller pd-reboot.py   --noconfirm
+}
+
+package() {
+  install -d -m 755 "$pkgdir"/usr/share/pidesktop/{pd-powerkey,pd-poweroff,pd-reboot}
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey/pd-powerkey ${pkgdir}/usr/bin/pidesktop/pd-powerkey
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff/pd-poweroff ${pkgdir}/usr/bin/pidesktop/pd-poweroff
+  cp -r ${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot/pd-reboot     ${pkgdir}/usr/bin/pidesktop/pd-reboot
+
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"
+  install -D -m 644 "${srcdir}/${pkgname}-${sourcever}/${pkgname}-poweroff.service"    "${pkgdir}/usr/lib/systemd/system/${pkgname}-poweroff.service"
+}
