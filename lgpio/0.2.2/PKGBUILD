@@ -1,0 +1,35 @@
+# Maintainer: Bert Alpen <bert.alpen@googlemail.com>
+
+pkgname=lgpio
+pkgver=0.2.2
+pkgrel=0
+pkgdesc="lgpio library"
+arch=('armv7h')
+url="https://abyz.me.uk/lg/index.html"
+license=('MIT')
+makedepends=(
+  'python'
+  'python-setuptools'
+  'swig'
+)
+provides=('pidesktop')
+source=(
+  "http://abyz.me.uk/lg/lg.zip"  
+)
+sha256sums=(
+  'bb31c6031b632911a4cbbd1d47ea326f1249b9f9efe1504eca83d1e0ef0394af'
+)
+
+build() {
+  # build the lgpio library from source
+  cd lg
+  export CFLAGS=-std=gnu17
+  make lib
+}
+
+
+package() {
+  cd lg
+  export CFLAGS=-std=gnu17
+  make install lib DESTDIR=${pkgdir}
+}
