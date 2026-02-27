@@ -4,7 +4,6 @@ After=local-fs.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/pidesktop/pd-powerkey
-
+ExecStart=/usr/bin/pidesktop/pd-powerkey/pd-powerkey
 [Install]
 WantedBy=multi-user.target

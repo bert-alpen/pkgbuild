@@ -3,47 +3,54 @@
 pkgname=pidesktop
 pkgver=0.4.0
 sourcever=0.4
-pkgrel=1
+pkgrel=2
 pkgdesc="Systemd services and script files for the power button functionality of the 'pi desktop' enclosure from element14 (https://community.element14.com/products/devtools/product-pages/w/documents/22485)"
 arch=('armv7h')
 url="https://github.com/bert-alpen/pidesktop"
 license=('MIT')
 depends=(
+  'lgpio'
+)
+makedepends=(
   'python'
+  'lgpio'
 )
 provides=('pidesktop')
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/bert-alpen/pidesktop/archive/refs/tags/v${sourcever}.tar.gz"
   "${pkgname}-powerbutton.service"
   "${pkgname}-poweroff.service"
-  "${pkgname}-reboot.service"  
+  "${pkgname}-reboot.service"
 )
 sha256sums=(
   'f2c04750eedbde93e61b06aa4a34cae905d62a51fa9ab0393c22658cf5d142e4'
-  '2b81613b75e89103d9f1f00af6d6d1c047b4e959ea32875bd58d00f4fec1e0d0'
-  '29dd23bd6d55004d4d1db37b99b6d1f8f920cb270360d83cfb823e73f08ae9a8'
-  'fdb716bde7539fac507129ca3568a4b320934d0bc85077e6404036b0fe705b5b'
+  '23d69a7959fd291434438edc81d5bc55a23599d23da4a4afe13264877ea79296'
+  '8de32c3df7bff3c379e6b4fbd11bdd0249ff0f21f972dde312eb251c90af62a5'
+  'ea3bde7fd4c44a7de100f516ad0aad3e8aa9c738912c81a80b60b18e256d9167'
 )
 
 prepare() {
   python -m venv venv
   source venv/bin/activate
-  pip install RPi.GPIO
+  pip install lgpio
+  pip install rpi-lgpio
   pip install pyinstaller
 }
 
 build() {
   cd "$pkgname-$sourcever"
-  pyinstaller pd-powerkey.py --noconfirm
-  pyinstaller pd-poweroff.py --noconfirm
-  pyinstaller pd-reboot.py   --noconfirm
+  pyinstaller pd-powerkey.py  --noconfirm
+  pyinstaller pd-poweroff.py  --noconfirm
+  pyinstaller pd-reboot.py    --noconfirm
+
+  deactivate
 }
 
 package() {
   mkdir -p "${pkgdir}/usr/bin/pidesktop/"
-  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey/pd-powerkey" "${pkgdir}/usr/bin/pidesktop/"
-  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff/pd-poweroff" "${pkgdir}/usr/bin/pidesktop/"
-  cp "${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot/pd-reboot"     "${pkgdir}/usr/bin/pidesktop/"
+  cp -r "${srcdir}/${pkgname}-${sourcever}/dist/pd-powerkey" "${pkgdir}/usr/bin/pidesktop/"
+  cp -r "${srcdir}/${pkgname}-${sourcever}/dist/pd-poweroff" "${pkgdir}/usr/bin/pidesktop/"
+  cp -r "${srcdir}/${pkgname}-${sourcever}/dist/pd-reboot"   "${pkgdir}/usr/bin/pidesktop/"
 
   install -D -m 644 "${srcdir}/${pkgname}-powerbutton.service" "${pkgdir}/usr/lib/systemd/system/${pkgname}-powerbutton.service"
   install -D -m 644 "${srcdir}/${pkgname}-reboot.service"      "${pkgdir}/usr/lib/systemd/system/${pkgname}-reboot.service"

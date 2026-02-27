@@ -6,7 +6,7 @@ Requires=poweroff.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/pidesktop/pd-poweroff
+ExecStart=/usr/bin/pidesktop/pd-poweroff/pd-poweroff
 
 [Install]
 WantedBy=poweroff.target
