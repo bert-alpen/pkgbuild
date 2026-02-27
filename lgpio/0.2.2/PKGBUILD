@@ -2,7 +2,7 @@
 
 pkgname=lgpio
 pkgver=0.2.2
-pkgrel=0
+pkgrel=1
 pkgdesc="lgpio library"
 arch=('armv7h')
 url="https://abyz.me.uk/lg/index.html"
@@ -32,4 +32,5 @@ package() {
   cd lg
   export CFLAGS=-std=gnu17
   make install lib DESTDIR=${pkgdir}
+  mv ${pkgdir}/usr/local/* ${pkgdir}/usr
 }
